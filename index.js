@@ -2,8 +2,10 @@ const express = require("express")
 const app = express()
 const path = require("path")
  const morgan = require("morgan")
+
+ const connectDB = require("./server/databse/DB_connection")
 require("dotenv").config({path: "config.env"})
-const {UM_DB_URL, UM_PORT} = process.env
+const { UM_PORT} = process.env
 
 // log requests
 // app.use(morgan("tiny"))
@@ -20,6 +22,9 @@ app.use("/css", express.static(path.resolve(__dirname, "assets/css")))
 app.use("/img", express.static(path.resolve(__dirname, "assets/img")))
 app.use("/js", express.static(path.resolve(__dirname, "assets/js")))
 
+
+// connect to database
+connectDB()
 
 // load routers
 app.use('/', require("./server/routes/router"))
