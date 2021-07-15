@@ -9,7 +9,7 @@ exports.homeRoute = (req, res) =>{
     res.render("index")
 }
 /* 
-    @desc Add User Route
+    @desc Add-User form Route
     @method Get /add-user
     @access    Public
 */
@@ -18,7 +18,7 @@ exports.addUserRoute = (req, res) =>{
 }
 
 /* 
-    @desc Update User Route
+    @desc Update-User form Route
     @method Get /update-user
     @access    Public
 */

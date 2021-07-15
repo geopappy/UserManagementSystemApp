@@ -12,6 +12,7 @@ const { UM_PORT} = process.env
 
 // parse request to bodyparser
 app.use(express.urlencoded({extended: false}))
+app.use(express.json())
 
 // set view engine
 app.set("views", path.resolve(__dirname,"views"))
