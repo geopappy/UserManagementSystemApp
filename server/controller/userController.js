@@ -1,8 +1,8 @@
-const {validationResult} = require ("express-validator")
-const UserModel = require("../model/User")
+import {validationResult} from "express-validator"
+import UserModel from "../model/User.js"
 
 // create and save new user
-exports.createUser = async(req, res, next) =>{
+export const createUser = async(req, res, next) =>{
     try {
         //  check for errors during validation
     const errors =  validationResult(req)
@@ -13,52 +13,61 @@ exports.createUser = async(req, res, next) =>{
         const user = new UserModel(req.body)
         // save user
        const newUser= await user.save()
-        res.status(200).send({newUser})
+        // res.status(200).json({newUser})
+        // redirect user back to add-user form
+        res.redirect("/add-user")
   
     } catch (err) {
-        res.status(500).send({message: err.message || "Some error occured while creating new User"})
+        res.status(500).json({message: err.message || "Some error occured while creating new User"})
     }
 }
 // // fetch Users
-exports.fetchUser = async(req, res, next)=>{
+export const fetchUser = async(req, res, next)=>{
     const conditions = {}
-    if(req.query) Object.assign(conditions, req.query)
+    if(req.query.id) conditions._id = req.query.id
+    
   
     try {
         const user = await UserModel.find(conditions)
-        res.status(200).send({user})
+        
+        res.json({user})
     } catch (err) {
-        res.status(500).send({message: err.message})
+        res.status(500).json({message: err.message})
     }
 }
 // // Update User
-exports.updateUser = async(req, res, next)=>{
+export const updateUser = async(req, res, next)=>{
+
+    console.log("i got here")
             //  check for errors during validation
     const errors =  validationResult(req)
     // validate request
-    if(!req.body || !errors.isEmpty()) return res.status(400).send({message: "Content can not be empty!"})
+    if(!req.body || !errors.isEmpty()) return res.status(400).json({message: "Content can not be empty!"})
     
     try{
         const userUpdate = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true})
        
-        if(!userUpdate) return res.status(404).send({message:"User not found" })
-        res.json({userUpdate})
+        if(!userUpdate) return res.status(404).json({message:"User not found" })
+        // res.json({userUpdate})
+        res.redirect("/")
     } catch (err){
-        res.status(500).send({message: err.message})
+        res.status(500).json({message: err.message})
     }
 
     
 
 }
 // Delete User
-exports.deleteUser = async(req, res, next)=>{
+export const deleteUser = async(req, res, next)=>{
     try{
-       const UserDeleted= await UserModel.findByIdAndUpdate(req.params.id)
+        
+       const UserDeleted= await UserModel.findByIdAndDelete(req.params.id)
        
-        if(!UserDeleted) return res.status(404).send({message:"User not found" })
-        res.send({message: "user successfully deleted"})
+        if(!UserDeleted) return res.status(404).json({message:"User not found" })
+        res.send("User deleted successfully")
+       
     } catch (err){
-        res.status(500).send({message: err.message})
+        res.status(500).json({message: err.message})
     }
 
 }

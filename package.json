@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "CRUD application with express and mongodb",
   "main": "index.js",
+  "type" : "module",
+  
   "scripts": {
     "start": "nodemon index.js"
   },
@@ -28,6 +30,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
     "mongoose": "^5.13.2",
     "morgan": "^1.10.0"
   },
